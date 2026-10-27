@@ -1,0 +1,22 @@
+{
+  "server_ip": "",
+  "rtmp_port": 1935,
+  "web_port": 8080,
+  "watchdog_timeout": 3.5,
+  "chunk_size": 8192,
+  "url_display_mode": "local",
+  "stream_keys": {
+    "irl": {
+      "key": "irl",
+      "description": "Feed Móvil IRL Principal (Por defecto)",
+      "active": true,
+      "created_at": "2026-10-27 00:00:00",
+      "last_used": null
+    }
+  },
+  "tailscale": {
+    "ip": "",
+    "status": "offline",
+    "auto_detect": true
+  }
+}

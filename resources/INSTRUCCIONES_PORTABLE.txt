@@ -1,0 +1,34 @@
+================================================================================
+          IRL STREAM OPERATIONS CENTER - VERSION PORTABLE / INSTALADOR
+================================================================================
+Autor Oficial : Iamfreedz
+Canal de Kick : https://kick.com/iamfreedz
+Sistema       : IRL [PRD/V1] - Servidor RTMP Anti-Cortes y Consola Web Fiori
+================================================================================
+
+Esta versión es 100% independiente y NO requiere tener Python ni ninguna
+otra librería instalada en la computadora.
+
+--------------------------------------------------------------------------------
+¿CÓMO USARLO?
+--------------------------------------------------------------------------------
+1. Haz doble clic sobre "IRL_Server.exe".
+2. En la primera ejecución:
+   - Creará automáticamente en esta carpeta la subcarpeta "obs_plugin\" con los
+     scripts listos para OBS Studio (irl_auto_scene_switcher.lua y .py).
+   - Creará automáticamente un acceso directo en tu Escritorio: "IRL Stream Server".
+   - Creará el archivo "config.json" para guardar tu configuración limpia.
+   - Iniciará el servidor RTMP (puerto 1935) y la Consola Web (puerto 8080).
+   - Abrirá automáticamente tu navegador en: http://localhost:8080
+
+3. Para OBS Studio:
+   - En OBS, ve a Herramientas ➔ Scripts ➔ Añadir (+).
+   - Abre la carpeta "obs_plugin" y selecciona "irl_auto_scene_switcher.lua".
+   - Elige tu fuente multimedia y tus escenas (EN VIVO y PAUSA). ¡Listo!
+
+--------------------------------------------------------------------------------
+AUTOR Y CRÉDITOS
+--------------------------------------------------------------------------------
+Desarrollado por: Iamfreedz
+Sígueme en Kick : https://kick.com/iamfreedz
+================================================================================

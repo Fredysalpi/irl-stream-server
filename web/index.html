@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IRL Stream Operations Center &amp; Media Broker</title>
+  <link rel="stylesheet" href="sap_style.css">
+</head>
+
+<body>
+
+  <!-- =========================================================================
+       IRL SHELL BAR (HEADER CORPORATIVO FIORI)
+       ========================================================================= -->
+  <header class="sap-shell-bar">
+    <div class="sap-shell-left">
+      <div class="sap-logo-badge">IRL</div>
+      <div class="sap-app-title">
+        NetWeaver IRL Hub
+        <span class="sap-app-subtitle">Control Center &amp; Media Broker</span>
+      </div>
+    </div>
+
+    <!-- Acciones de Cabecera: Apóyame & Seguir en Kick -->
+    <div class="sap-shell-actions">
+      <button type="button" class="btn-apoyame" id="headerSupportBtn" onclick="openSupportModal()"
+        title="Apoya el canal y stream IRL">
+        <span class="btn-heart-icon">💖</span>
+        <span class="btn-text">Apóyame</span>
+      </button>
+
+      <a href="https://kick.com/iamfreedz" target="_blank" rel="noopener noreferrer" class="btn-kick-follow"
+        title="Seguir a @iamfreedz en Kick">
+        <svg class="kick-svg-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+          <path d="M4 3h4v6.5l4.5-6.5h5.5l-5.8 7.8L18.5 21H13l-5-7.5V21H4V3z" />
+        </svg>
+        <span class="btn-text">Seguir</span>
+      </a>
+    </div>
+
+    <div class="sap-shell-right">
+      <div id="shellStatusBadge" class="sap-badge-pill status-online">
+        <span class="sap-pulse-dot"></span> RTMP 1935 ONLINE
+      </div>
+      <div class="sap-system-info">
+        Sistema: <strong>IRL [PRD/V1]</strong><br>
+        Usuario: <strong>ADMIN</strong>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       ESTRUCTURA PRINCIPAL CON SIDEBAR (SAP ENTERPRISE WORKSPACE)
+       ========================================================================= -->
+  <div class="sap-app-body">
+
+    <!-- BARRA LATERAL IZQUIERDA: MENÚ DE PANELES ESTILO SAP FIORI -->
+    <aside class="sap-sidebar" id="sapSidebar">
+      <div class="sap-sidebar-header">
+        <div class="sap-sidebar-title">
+          <span class="sap-sidebar-logo-icon">🗂️</span> MENÚ DE PANELES
+        </div>
+        <div class="sap-sidebar-subtitle">IRL Control Center</div>
+      </div>
+
+      <!-- Navegación por Transacciones (Sidebar SAP) -->
+      <nav class="sap-sidebar-nav">
+
+        <div class="sap-sidebar-group-title">OPERACIONES &bull; EN VIVO</div>
+
+        <div class="sap-tab-item active" data-tcode="IRL01">
+          <div class="sap-sidebar-item-content">
+            <span class="sap-sidebar-tcode-pill">IRL01</span>
+            <span class="sap-sidebar-label">Cockpit en Vivo</span>
+          </div>
+          <span class="sap-tab-badge sap-badge-pulse-green">LIVE</span>
+        </div>
+
+        <div class="sap-tab-item" data-tcode="SM21">
+          <div class="sap-sidebar-item-content">
+            <span class="sap-sidebar-tcode-pill">SM21</span>
+            <span class="sap-sidebar-label">SysLog del Sistema</span>
+          </div>
+          <span class="sap-tab-badge">Log</span>
+        </div>
+
+        <div class="sap-sidebar-group-title" style="margin-top: 14px;">CONFIGURACIÓN &bull; STREAMING</div>
+
+        <div class="sap-tab-item" data-tcode="IRL02">
+          <div class="sap-sidebar-item-content">
+            <span class="sap-sidebar-tcode-pill">IRL02</span>
+            <span class="sap-sidebar-label">Maestro de Claves</span>
+          </div>
+          <span class="sap-tab-badge">Keys</span>
+        </div>
+
+        <div class="sap-tab-item" data-tcode="IRL03">
+          <div class="sap-sidebar-item-content">
+            <span class="sap-sidebar-tcode-pill">IRL03</span>
+            <span class="sap-sidebar-label">Tailscale VPN Móvil</span>
+          </div>
+          <span class="sap-tab-badge">4G/5G</span>
+        </div>
+
+        <div class="sap-tab-item" data-tcode="IRL04">
+          <div class="sap-sidebar-item-content">
+            <span class="sap-sidebar-tcode-pill">IRL04</span>
+            <span class="sap-sidebar-label">Parámetros Red &amp; IP</span>
+          </div>
+          <span class="sap-tab-badge">Config</span>
+        </div>
+
+        <div class="sap-tab-item" data-tcode="IRL05">
+          <div class="sap-sidebar-item-content">
+            <span class="sap-sidebar-tcode-pill">IRL05</span>
+            <span class="sap-sidebar-label">Guía OBS Studio</span>
+          </div>
+          <span class="sap-tab-badge">OBS</span>
+        </div>
+
+      </nav>
+
+      <!-- Pie del Sidebar con Estado del Servidor y Enlace a Kick -->
+      <div class="sap-sidebar-footer">
+        <div class="sap-sidebar-card">
+          <div class="sap-sidebar-status-header">
+            <span>ESTADO DEL SERVIDOR</span>
+            <span class="sap-pulse-dot" style="background:#107e3e; color:#107e3e;"></span>
+          </div>
+          <div class="sap-sidebar-kpi-row">
+            <span class="kpi-tag">RTMP</span>
+            <strong style="color: #107e3e;">:1935 ONLINE</strong>
+          </div>
+          <div class="sap-sidebar-kpi-row">
+            <span class="kpi-tag">HTTP</span>
+            <strong>:8080 CONSOLE</strong>
+          </div>
+          <div class="sap-sidebar-kpi-row">
+            <span class="kpi-tag">WATCHDOG</span>
+            <strong style="color: #0854a0;">3.5s Activo</strong>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ÁREA DE TRABAJO PRINCIPAL (OBJECT HEADER + VISTAS) -->
+    <div class="sap-main-workarea">
+
+      <!-- =========================================================================
+           SAP OBJECT HEADER / BARRA DE INFORMACIÓN GLOBAL
+           ========================================================================= -->
+      <section class="sap-object-header">
+        <div class="sap-object-title-group">
+          <div class="sap-object-breadcrumb">IRL Media Architecture &bull; Streaming Anti-Cortes</div>
+          <h1 class="sap-object-title" id="objectHeaderTitle">
+            <span class="sap-current-tcode" id="currentTCodeBadge">IRL01</span>
+            Cockpit de Monitoreo en Tiempo Real (Anti-Cortes)
+          </h1>
+        </div>
+
+        <div class="sap-header-metrics-group">
+          <div class="sap-header-kpi-item">
+            <span class="sap-kpi-label">IP Red Wi-Fi (LAN)</span>
+            <span class="sap-kpi-val" id="headerServerIp">Detectando...</span>
+          </div>
+          <div class="sap-header-kpi-item">
+            <span class="sap-kpi-label">IP Tailscale VPN (4G/5G)</span>
+            <span class="sap-kpi-val" id="headerTailscaleIp"
+              style="color: #0854a0; font-weight: 700;">—</span>
+          </div>
+          <div class="sap-header-kpi-item">
+            <span class="sap-kpi-label">Puerto RTMP</span>
+            <span class="sap-kpi-val">1935 TCP</span>
+          </div>
+          <div class="sap-header-kpi-item">
+            <span class="sap-kpi-label">Claves Transmisión</span>
+            <span class="sap-kpi-val" id="keysCountBadge">1 Activa(s)</span>
+          </div>
+          <div class="sap-header-kpi-item">
+            <span class="sap-kpi-label">Red Externa</span>
+            <span class="sap-kpi-val"><span id="headerTailscaleBadge" class="sap-status-pill inactive"
+                style="font-size: 11px; padding: 3px 8px;">TAILSCALE OFFLINE</span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           CONTENIDO PRINCIPAL
+           ========================================================================= -->
+      <main class="sap-content-container">
+
+        <!-- -----------------------------------------------------------------------
+         TRANSACCIÓN [IRL01]: COCKPIT DE MONITOREO
+         ----------------------------------------------------------------------- -->
+        <div id="view-IRL01" class="sap-tab-view active">
+
+          <!-- Fila de KPI Tiles estilo ALV -->
+          <div class="sap-grid-4" style="margin-bottom: 20px;">
+
+            <!-- Tile 1: Celular / IRL Pro -->
+            <div class="sap-kpi-tile">
+              <div class="sap-kpi-top">
+                <span class="sap-kpi-name">Ingesta Móvil (IRL Pro)</span>
+                <div id="kpiTrafficMobile" class="sap-kpi-status-traffic sap-traffic-gray"></div>
+              </div>
+              <div class="sap-kpi-big-value" id="kpiValMobile" style="color: var(--sap-text-muted);">SIN SEÑAL</div>
+              <div class="sap-kpi-subdesc" id="kpiSubMobile">Esperando conexión de IRL Pro...</div>
+            </div>
+
+            <!-- Tile 2: Bitrate Actual -->
+            <div class="sap-kpi-tile">
+              <div class="sap-kpi-top">
+                <span class="sap-kpi-name">Tasa de Transferencia</span>
+                <div id="kpiTrafficBitrate" class="sap-kpi-status-traffic sap-traffic-gray"></div>
+              </div>
+              <div class="sap-kpi-big-value" id="kpiValBitrate">0 <span class="sap-kpi-unit">Kbps</span></div>
+              <div class="sap-kpi-subdesc">Flujo de datos H.264/AAC</div>
+            </div>
+
+            <!-- Tile 3: OBS Studio Local -->
+            <div class="sap-kpi-tile">
+              <div class="sap-kpi-top">
+                <span class="sap-kpi-name">Salida OBS Studio</span>
+                <div id="kpiTrafficOBS" class="sap-kpi-status-traffic sap-traffic-gray"></div>
+              </div>
+              <div class="sap-kpi-big-value" id="kpiValOBS" style="color: #556b82;">INACTIVO</div>
+              <div class="sap-kpi-subdesc" id="kpiSubOBS">Media Source / VLC Source</div>
+              <button type="button" class="sap-btn sap-btn-sm" onclick="navigateTCode('IRL05')"
+                style="margin-top: 8px; width: 100%; font-size: 11px;">📖 Guía de Captura en OBS</button>
+            </div>
+
+            <!-- Tile 4: Paquetes y Watchdog -->
+            <div class="sap-kpi-tile">
+              <div class="sap-kpi-top">
+                <span class="sap-kpi-name">Frames &amp; Watchdog</span>
+                <div class="sap-kpi-status-traffic sap-traffic-green"></div>
+              </div>
+              <div class="sap-kpi-big-value" id="kpiValFrames">0 V / 0 A</div>
+              <div class="sap-kpi-subdesc" id="kpiSubFrames">Watchdog Anti-Cortes: 3.5s Activo</div>
+            </div>
+          </div>
+
+          <!-- Card Gráfico en Vivo -->
+          <div class="sap-card">
+            <div class="sap-card-header">
+              <div class="sap-card-title-wrap">
+                <span class="sap-card-title">Monitor Gráfico de Bitrate en Tiempo Real</span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="sap-btn sap-btn-sm" onclick="fetchConfig()">🔄 Refrescar Métricas</button>
+              </div>
+            </div>
+            <div class="sap-card-body">
+              <div class="sap-canvas-wrap">
+                <canvas id="bitrateChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Estado Arquitectura y Rutas -->
+          <div class="sap-card">
+            <div class="sap-card-header">
+              <span class="sap-card-title">Topología de Flujo Multimedia Anti-Cortes</span>
+            </div>
+            <div class="sap-card-body">
+              <div class="sap-message-strip info">
+                <span class="sap-message-strip-icon">ℹ️</span>
+                <div>
+                  <strong>Mecanismo de Protección Anti-Cortes:</strong> Si el celular pierde señal 4G/5G por más de 3.5
+                  segundos, el servidor RTMP desconecta limpiamente el socket hacia OBS Studio. Esto dispara el evento
+                  <code>Media Ended</code> en OBS y permite que tu plugin de cambio de escena automático muestre la
+                  pantalla de "Volvemos enseguida" sin congelamientos de imagen.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- -----------------------------------------------------------------------
+         TRANSACCIÓN [IRL02]: MAESTRO DE CLAVES (STREAM KEYS)
+         ----------------------------------------------------------------------- -->
+        <div id="view-IRL02" class="sap-tab-view">
+
+          <!-- Formulario Crear Clave -->
+          <div class="sap-card">
+            <div class="sap-card-header">
+              <div class="sap-card-title-wrap">
+                <span class="sap-card-title">Creación de Clave de Transmisión (Stream Key)</span>
+              </div>
+            </div>
+            <div class="sap-card-body">
+              <div class="sap-grid-3">
+                <div class="sap-form-group">
+                  <label class="sap-form-label">Identificador / Clave <span class="req">*</span></label>
+                  <div class="sap-input-addon-wrap">
+                    <input type="text" id="newKeyName" class="sap-input sap-input-mono"
+                      placeholder="Ej: irl, vivo_ciudad, cam1">
+                    <button type="button" class="sap-btn" onclick="generateRandomKey()"
+                      title="Generar clave aleatoria segura">🎲 Token</button>
+                  </div>
+                  <div class="sap-form-helper">Solo letras minúsculas, números y guiones.</div>
+                </div>
+
+                <div class="sap-form-group">
+                  <label class="sap-form-label">Descripción / Titular del Stream</label>
+                  <input type="text" id="newKeyDesc" class="sap-input"
+                    placeholder="Ej: Móvil IRL Principal (Samsung S24 Ultra)">
+                  <div class="sap-form-helper">Referencia descriptiva del emisor.</div>
+                </div>
+
+                <div class="sap-form-group">
+                  <label class="sap-form-label">Estado Inicial</label>
+                  <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
+                    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 600;">
+                      <input type="checkbox" id="newKeyActive" checked style="width: 18px; height: 18px;">
+                      Habilitar transmisión de inmediato
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+                <button class="sap-btn sap-btn-emphasized" onclick="createStreamKey()">💾 Guardar / Crear Clave</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabla ALV de Claves Existentes -->
+          <div class="sap-card">
+            <div class="sap-card-header">
+              <div class="sap-card-title-wrap">
+                <span class="sap-card-title">Catálogo Maestro de Claves Registradas</span>
+              </div>
+              <div>
+                <button class="sap-btn sap-btn-sm" onclick="fetchKeys()">🔄 Actualizar Lista</button>
+              </div>
+            </div>
+            <div class="sap-card-body" style="padding: 0;">
+              <div class="sap-table-container">
+                <table class="sap-alv-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 90px; text-align: center;">Estado</th>
+                      <th>Clave (Key)</th>
+                      <th>Descripción</th>
+                      <th>URL Ingesta Móvil (IRL Pro)</th>
+                      <th>URL OBS Studio (Captura)</th>
+                      <th style="width: 100px;">Código QR</th>
+                      <th style="width: 160px;">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="keysTableBody">
+                    <!-- Se llena dinámicamente con sap_app.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- -----------------------------------------------------------------------
+         TRANSACCIÓN [IRL03]: CONECTIVIDAD TAILSCALE VPN & GUÍA MÓVIL
+         ----------------------------------------------------------------------- -->
+        <div id="view-IRL03" class="sap-tab-view">
+
+          <div class="sap-message-strip success">
+            <span class="sap-message-strip-icon">🔒</span>
+            <div>
+              <strong>Integración con Tailscale VPN Mesh:</strong> Conecta tu celular móvil (usando datos 4G/5G en la
+              calle) directamente con tu PC y OBS Studio de forma encriptada, segura y ultra rápida, sin abrir puertos
+              en tu router ni depender de dominios externos.
+            </div>
+          </div>
+
+          <!-- Tarjeta de Estado y Conexión Tailscale -->
+          <div class="sap-card">
+            <div class="sap-card-header">
+              <div class="sap-card-title-wrap">
+                <span class="sap-card-title">Direccionamiento Tailscale VPN del Servidor RTMP</span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="sap-btn sap-btn-sm" onclick="detectTailscaleIp(true)">⚡ Re-detectar IP Tailscale</button>
+              </div>
+            </div>
+            <div class="sap-card-body">
+
+              <div class="sap-grid-2">
+                <div class="sap-form-group">
+                  <label class="sap-form-label">IP Tailscale de esta PC (VPN)</label>
+                  <div class="sap-input-addon-wrap">
+                    <input type="text" id="tsDisplayIp" class="sap-input sap-input-mono" value="" placeholder="Esperando conexión Tailscale..." readonly
+                      style="font-weight: 700; color: #0854a0; font-size: 15px;">
+                    <span id="tsStatusBadge" class="sap-status-pill inactive">DESCONECTADO</span>
+                  </div>
+                  <div class="sap-form-helper">Dirección virtual privada asignada por tu red Tailscale.</div>
+                </div>
+
+                <div class="sap-form-group">
+                  <label class="sap-form-label">Seleccionar Clave de Transmisión (Stream Key)</label>
+                  <select id="tsKeySelect" class="sap-select" onchange="updateTailscaleUrls()">
+                    <!-- Se llena con las claves activas -->
+                  </select>
+                  <div class="sap-form-helper">Elige la clave que usarás en IRL Pro.</div>
+                </div>
+              </div>
+
+              <div class="sap-grid-2" style="margin-top: 14px;">
+                <div class="sap-form-group">
+                  <label class="sap-form-label">URL del Servidor RTMP (Para IRL Pro en la calle)</label>
+                  <div class="sap-copy-box" style="padding: 10px;">
+                    <span id="tsServerUrlText"
+                      style="font-weight: 600; font-family: var(--sap-font-mono);">rtmp://[IP-TAILSCALE]:1935/live</span>
+                    <button class="sap-btn sap-btn-ghost sap-btn-sm" onclick="copyTailscaleServerUrl()">📋
+                      Copiar</button>
+                  </div>
+                  <div class="sap-form-helper">Pégala en el campo <strong>RTMP URL / Servidor</strong> de IRL Pro.</div>
+                </div>
+
+                <div class="sap-form-group">
+                  <label class="sap-form-label">Identificador / Clave (Stream Key)</label>
+                  <div class="sap-copy-box" style="padding: 10px;">
+                    <span id="tsKeyText"
+                      style="font-weight: 700; color: #0854a0; font-family: var(--sap-font-mono);">irl</span>
+                    <button class="sap-btn sap-btn-ghost sap-btn-sm" onclick="copyTailscaleKey()">📋 Copiar</button>
+                  </div>
+                  <div class="sap-form-helper">Pégala en el campo <strong>Stream Key</strong> de IRL Pro.</div>
+                </div>
+              </div>
+
+              <!-- URL Completa y Acciones Rápidas -->
+              <div
+                style="margin-top: 16px; padding: 14px; background: #f5f8fc; border-radius: 6px; border: 1px solid #d4e3f5;">
+                <div
+                  style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                  <div>
+                    <span style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: #556b82;">URL de
+                      Ingesta Completa (Tailscale 4G/5G):</span>
+                    <div id="tsFullUrlText"
+                      style="font-family: var(--sap-font-mono); font-size: 14px; color: #0854a0; font-weight: 700; margin-top: 4px;">
+                      rtmp://[IP-TAILSCALE]:1935/live/irl</div>
+                  </div>
+                  <div style="display: flex; gap: 8px;">
+                    <button class="sap-btn sap-btn-emphasized" onclick="copyTailscaleFullUrl()">📋 Copiar URL
+                      Completa</button>
+                    <button class="sap-btn" onclick="openTailscaleQrModal()">📱 Ver Código QR</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Tarjeta 2: Enlaces de Descarga y Mini Guía -->
+          <div class="sap-card">
+            <div class="sap-card-header">
+              <span class="sap-card-title">Mini Guía de Configuración &amp; Enlaces Oficiales de Descarga</span>
+            </div>
+            <div class="sap-card-body">
+
+              <div class="sap-grid-3" style="margin-bottom: 20px;">
+                <a href="https://tailscale.com/download/windows" target="_blank" class="sap-kpi-tile"
+                  style="text-decoration: none; color: inherit; cursor: pointer; border: 1px solid #c8d9ed; transition: all 0.2s;">
+                  <div class="sap-kpi-top">
+                    <span class="sap-kpi-name">💻 PC Windows</span>
+                    <span style="font-size: 18px;">📥</span>
+                  </div>
+                  <div style="font-size: 15px; font-weight: 700; color: #0854a0; margin: 8px 0;">Descargar para Windows
+                  </div>
+                  <div class="sap-kpi-subdesc">Instalador oficial de Tailscale para PC</div>
+                </a>
+
+                <a href="https://play.google.com/store/apps/details?id=com.tailscale.ipn" target="_blank"
+                  class="sap-kpi-tile"
+                  style="text-decoration: none; color: inherit; cursor: pointer; border: 1px solid #c8d9ed; transition: all 0.2s;">
+                  <div class="sap-kpi-top">
+                    <span class="sap-kpi-name">🤖 Celular Android</span>
+                    <span style="font-size: 18px;">📱</span>
+                  </div>
+                  <div style="font-size: 15px; font-weight: 700; color: #0854a0; margin: 8px 0;">Google Play Store</div>
+                  <div class="sap-kpi-subdesc">App Tailscale para celulares Android</div>
+                </a>
+
+                <a href="https://apps.apple.com/app/tailscale/id1470499037" target="_blank" class="sap-kpi-tile"
+                  style="text-decoration: none; color: inherit; cursor: pointer; border: 1px solid #c8d9ed; transition: all 0.2s;">
+                  <div class="sap-kpi-top">
+                    <span class="sap-kpi-name">🍎 iPhone / iOS</span>
+                    <span style="font-size: 18px;">🍏</span>
+                  </div>
+                  <div style="font-size: 15px; font-weight: 700; color: #0854a0; margin: 8px 0;">Apple App Store</div>
+                  <div class="sap-kpi-subdesc">App Tailscale para dispositivos Apple</div>
+                </a>
+              </div>
+
+              <div
+                style="background: #ffffff; border: 1px solid #e5e5e5; border-radius: 6px; padding: 18px; line-height: 1.8;">
+                <h4 style="margin-bottom: 10px; color: #0854a0; font-size: 15px;">🚀 Pasos para emitir con tus datos
+                  móviles (4G/5G) desde la calle:</h4>
+                <ol style="margin-left: 20px; color: #333;">
+                  <li><strong>Inicia sesión con la misma cuenta:</strong> Inicia sesión en la aplicación de Tailscale de
+                    tu PC y de tu celular móvil con la <em>misma cuenta</em> (por ejemplo, tu cuenta de Google).</li>
+                  <li><strong>Activa el interruptor en el celular:</strong> Abre Tailscale en tu celular y pulsa el
+                    botón de encendido para conectarte a tu red privada.</li>
+                  <li><strong>Abre IRL Pro:</strong> En los ajustes de RTMP, pon la URL del servidor con la IP de
+                    Tailscale: <code
+                      style="background: #eef4fc; padding: 2px 6px; border-radius: 4px; color: #0854a0;">rtmp://[IP-TAILSCALE]:1935/live</code>
+                    y tu clave.</li>
+                  <li><strong>¡Transmite en vivo!</strong> Ahora puedes salir a la calle con tus datos móviles. La señal
+                    viajará de forma directa hacia tu PC y tu OBS Studio sin cortes y con mínima latencia.</li>
+                </ol>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Tarjeta 3: Cómo desactivar la expiración de la llave -->
+          <div class="sap-card">
+            <div class="sap-card-header">
+              <div class="sap-card-title-wrap">
+                <span class="sap-card-title">🔑 Cómo Desactivar la Caducidad de la Llave de Cada Equipo (Disable Key
+                  Expiry)</span>
+              </div>
+              <div>
+                <a href="https://login.tailscale.com/admin/machines" target="_blank"
+                  class="sap-btn sap-btn-sm sap-btn-emphasized" style="text-decoration: none;">🌐 Abrir Tailscale Admin
+                  Console</a>
+              </div>
+            </div>
+            <div class="sap-card-body">
+              <div class="sap-message-strip info" style="margin-bottom: 16px;">
+                <span class="sap-message-strip-icon">ℹ️</span>
+                <div>
+                  Por seguridad, Tailscale hace que las conexiones de las máquinas caduquen cada 180 días. Para que tus
+                  llaves nunca expiren y tu celular siempre se conecte a la primera sin pedir login, realiza este
+                  proceso una sola vez para cada equipo.
+                </div>
+              </div>
+
+              <div
+                style="background: #fafafa; border: 1px solid #e1e4e8; border-radius: 6px; padding: 18px; line-height: 1.8;">
+                <h4 style="margin-bottom: 12px; color: #0854a0; font-size: 15px;">Pasos en el panel de administración de
+                  Tailscale:</h4>
+                <ol style="margin-left: 22px; color: #24292e;">
+                  <li>Ingresa a la consola web oficial: <a href="https://login.tailscale.com/admin/machines"
+                      target="_blank" style="color: #0070f2; font-weight: 600;">Tailscale Admin Console (Machines)</a>.
+                  </li>
+                  <li>Ve a la pestaña <strong>Machines (Máquinas)</strong> en la barra de navegación superior.</li>
+                  <li>Busca el dispositivo que quieres configurar en la lista (por ejemplo, tu PC de escritorio y tu
+                    celular móvil).</li>
+                  <li>Dirígete al extremo derecho de la fila de ese dispositivo y haz clic en el botón de los tres
+                    puntos (<strong>...</strong>).</li>
+                  <li>En el menú desplegable, haz clic en <strong>Disable Key Expiry (Desactivar caducidad de
+                      clave)</strong>.</li>
+                </ol>
+                <div
+                  style="margin-top: 12px; padding: 10px 14px; background: #e8f5e9; border-left: 4px solid #2e7d32; border-radius: 4px; color: #1b5e20; font-size: 13px;">
+                  ✓ <strong>Listo:</strong> En la columna "Key Expiry" del dispositivo ahora dirá <em>"Expiry
+                    disabled"</em> y la conexión será permanente e ininterrumpida.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- -----------------------------------------------------------------------
+         TRANSACCIÓN [IRL04]: PARÁMETROS DE RED & IP
+         ----------------------------------------------------------------------- -->
+        <div id="view-IRL04" class="sap-tab-view">
+
+          <div class="sap-card">
+            <div class="sap-card-header">
+              <span class="sap-card-title">Configuración de Red y Direccionamiento IP del Servidor</span>
+            </div>
+            <div class="sap-card-body">
+
+              <div class="sap-grid-2">
+
+                <div class="sap-form-group">
+                  <label class="sap-form-label">Dirección IP Red Local / Wi-Fi (LAN) <span class="req">*</span></label>
+                  <div class="sap-input-addon-wrap">
+                    <input type="text" id="paramServerIp" class="sap-input sap-input-mono" value="" placeholder="Auto-detectada por el sistema...">
+                    <button type="button" class="sap-btn" onclick="detectLocalIp()">⚡ Auto-detectar</button>
+                  </div>
+                  <div class="sap-form-helper">IP local de tu PC en la red LAN.</div>
+                </div>
+
+                <div class="sap-form-group">
+                  <label class="sap-form-label">Dirección IP Tailscale VPN (4G/5G)</label>
+                  <div class="sap-input-addon-wrap">
+                    <input type="text" id="paramTailscaleIp" class="sap-input sap-input-mono" value="" placeholder="Auto-detectada si Tailscale está activo...">
+                    <button type="button" class="sap-btn" onclick="detectTailscaleIp(true)">⚡ Auto-detectar</button>
+                  </div>
+                  <div class="sap-form-helper">IP virtual asignada por Tailscale a tu PC.</div>
+                </div>
+
+              </div>
+
+              <div class="sap-grid-2" style="margin-top: 10px;">
+                <div class="sap-form-group">
+                  <label class="sap-form-label">Modo de Visualización de URLs en la Consola</label>
+                  <select id="paramUrlMode" class="sap-select">
+                    <option value="tailscale">Mostrar con IP Tailscale (Recomendado para Móvil 4G/5G)</option>
+                    <option value="local">Mostrar con IP Local / Wi-Fi (LAN)</option>
+                  </select>
+                  <div class="sap-form-helper">Determina qué dirección se muestra de forma predeterminada en las URLs y
+                    códigos QR.</div>
+                </div>
+
+                <div class="sap-form-group">
+                  <label class="sap-form-label">Timeout Watchdog Anti-Cortes (segundos)</label>
+                  <input type="number" id="paramWatchdogTimeout" class="sap-input sap-input-mono" value="3.5"
+                    step="0.5">
+                  <div class="sap-form-helper">Segundos sin recibir datos antes de cortar señal limpia a OBS.</div>
+                </div>
+              </div>
+
+              <div class="sap-grid-2" style="margin-top: 10px;">
+                <div class="sap-form-group">
+                  <label class="sap-form-label">Puerto Servidor RTMP (TCP)</label>
+                  <input type="number" id="paramRtmpPort" class="sap-input sap-input-mono" value="1935">
+                  <div class="sap-form-helper">Puerto estándar: 1935.</div>
+                </div>
+
+                <div class="sap-form-group">
+                  <label class="sap-form-label">Puerto Consola Web (HTTP)</label>
+                  <input type="number" id="paramWebPort" class="sap-input sap-input-mono" value="8080">
+                  <div class="sap-form-helper">Puerto para acceder a este panel de administración.</div>
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; margin-top: 14px;">
+                <button class="sap-btn sap-btn-emphasized" onclick="saveSystemParams()">💾 Grabar Parámetros de
+                  Sistema</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- -----------------------------------------------------------------------
+         TRANSACCIÓN [IRL05]: GUÍA DE CONFIGURACIÓN OBS STUDIO (FUENTE MULTIMEDIA)
+         ----------------------------------------------------------------------- -->
+        <div id="view-IRL05" class="sap-tab-view">
+
+          <!-- Strip Informativo Superior -->
+          <div class="sap-message-strip info">
+            <span class="sap-message-strip-icon">🎬</span>
+            <div>
+              <strong>Integración Local OBS Studio &bull; Bucle Loopback Ultra Rápido:</strong> OBS captura la señal
+              directamente desde <code>127.0.0.1</code> (localhost) a través del puerto <code>1935</code>. Al ser una
+              conexión dentro de tu propia máquina, la latencia es prácticamente nula (&lt; 0.2s) y no consume ancho de
+              banda de subida/bajada de tu internet doméstico.
+            </div>
+          </div>
+
+          <!-- Tarjeta 1: Selector y Generador de URL para OBS -->
+          <div class="sap-card">
+            <div class="sap-card-header">
+              <div class="sap-card-title-wrap">
+                <span class="sap-card-title">Generador Rápido de URL para tu Fuente en OBS Studio</span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="sap-btn sap-btn-sm sap-btn-emphasized" onclick="copyObsUrl()">📋 Copiar URL para
+                  OBS</button>
+              </div>
+            </div>
+            <div class="sap-card-body">
+              <div class="sap-grid-2">
+                <div class="sap-form-group">
+                  <label class="sap-form-label">Seleccionar Clave de Transmisión (Stream Key)</label>
+                  <select id="obsKeySelect" class="sap-select" onchange="updateObsUrls()">
+                    <!-- Se llena dinámicamente con sap_app.js -->
+                  </select>
+                  <div class="sap-form-helper">Elige la clave con la que está transmitiendo tu celular en la calle.
+                  </div>
+                </div>
+
+                <div class="sap-form-group">
+                  <label class="sap-form-label">Estado de Captura en OBS</label>
+                  <div class="sap-input-addon-wrap" style="height: 36px; display: flex; align-items: center;">
+                    <span id="obsCaptureStatusBadge" class="sap-status-pill inactive"
+                      style="font-size: 13px; padding: 6px 14px;">
+                      ⚪ OBS INACTIVO (Esperando conexión)
+                    </span>
+                  </div>
+                  <div class="sap-form-helper">Se actualiza en tiempo real cuando OBS abre el socket multimedia.</div>
+                </div>
+              </div>
+
+              <!-- URL para Copiar -->
+              <div class="obs-url-highlight-box">
+                <div class="obs-url-label">URL Lista para la casilla "Entrada" de OBS Studio:</div>
+                <div class="obs-url-row">
+                  <span id="obsFullUrlText" class="obs-url-mono">rtmp://127.0.0.1:1935/live/irl_sckrg8</span>
+                  <button class="sap-btn sap-btn-emphasized" onclick="copyObsUrl()">📋 Copiar URL</button>
+                </div>
+                <div class="obs-url-hint">
+                  💡 <em>Esta es la dirección exacta que debes pegar en el campo <strong>Entrada (Input)</strong> de tu
+                    fuente multimedia en OBS.</em>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 2: Guía Paso a Paso Principal (Fuente Multimedia de OBS) -->
+          <div class="sap-card">
+            <div class="sap-card-header">
+              <div class="sap-card-title-wrap">
+                <span class="sap-card-title">Guía Paso a Paso: Cómo Agregar la "Fuente Multimedia" en OBS Studio</span>
+              </div>
+            </div>
+            <div class="sap-card-body">
+
+              <!-- Alerta Importante del Archivo Local -->
+              <div class="obs-warning-box">
+                <div class="obs-warning-icon">⚠️</div>
+                <div>
+                  <strong style="color: #b45309; font-size: 15px;">¡EL ERROR MÁS COMÚN AL USAR FUENTE MULTIMEDIA EN
+                    OBS!</strong>
+                  <p style="margin-top: 4px; color: #78350f;">
+                    Por defecto, OBS Studio tiene marcada la casilla <strong>"Archivo local" (Local file)</strong> y
+                    busca archivos de video en tu disco duro (.mp4, .mkv). Para que acepte la transmisión en vivo RTMP,
+                    <strong>DEBES DESMARCAR "Archivo local"</strong>. Al desmarcarlo, OBS te mostrará el campo
+                    <strong>Entrada (Input)</strong> donde pegarás tu URL.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Pasos estructurados -->
+              <div class="obs-steps-container">
+
+                <!-- Paso 1 -->
+                <div class="obs-step-item">
+                  <div class="obs-step-number">1</div>
+                  <div class="obs-step-content">
+                    <h4 class="obs-step-title">Añade la Fuente a tu Escena</h4>
+                    <p>En la ventana principal de <strong>OBS Studio</strong>, ubica el panel <strong>"Fuentes"
+                        (Sources)</strong> en la parte inferior, haz clic en el botón <strong>+ (Añadir)</strong> y
+                      selecciona <strong>"Fuente multimedia" (Media Source)</strong>.</p>
+                    <div class="obs-step-note">Ponle un nombre claro a la fuente, por ejemplo:
+                      <code>Móvil IRL - Directo</code> y pulsa <strong>Aceptar</strong>.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Paso 2 -->
+                <div class="obs-step-item">
+                  <div class="obs-step-number">2</div>
+                  <div class="obs-step-content">
+                    <h4 class="obs-step-title">Desmarca la casilla "Archivo local"</h4>
+                    <p>En la ventana emergente de propiedades de la fuente multimedia:</p>
+                    <div class="obs-checkbox-demo">
+                      <span style="text-decoration: line-through; color: #bb0000; font-weight: bold;">[X] Archivo
+                        local</span>
+                      <span style="margin: 0 10px;">➔</span>
+                      <span style="color: #107e3e; font-weight: bold;">[ ] Archivo local (DESMARCADO)</span>
+                    </div>
+                    <p style="margin-top: 6px; font-size: 13px; color: #556b82;">Al desmarcarlo se ocultará el
+                      explorador de archivos y aparecerán las opciones de red: <strong>Entrada</strong>, <strong>Formato
+                        de entrada</strong> y <strong>Límite de reconexión</strong>.</p>
+                  </div>
+                </div>
+
+                <!-- Paso 3 -->
+                <div class="obs-step-item">
+                  <div class="obs-step-number">3</div>
+                  <div class="obs-step-content">
+                    <h4 class="obs-step-title">Pega la URL del Servidor RTMP en "Entrada"</h4>
+                    <div class="obs-form-table">
+                      <div class="obs-form-row">
+                        <div class="obs-form-field">Campo en OBS: <strong>Entrada (Input)</strong></div>
+                        <div class="obs-form-value">
+                          <code id="obsGuideUrlField">rtmp://127.0.0.1:1935/live/irl_sckrg8</code>
+                          <button class="sap-btn sap-btn-sm" onclick="copyObsUrl()">Copiar</button>
+                        </div>
+                      </div>
+                      <div class="obs-form-row">
+                        <div class="obs-form-field">Campo en OBS: <strong>Formato de entrada</strong></div>
+                        <div class="obs-form-value"><em>Dejar completamente vacío</em> o escribir <code>rtmp</code>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Paso 4 -->
+                <div class="obs-step-item">
+                  <div class="obs-step-number">4</div>
+                  <div class="obs-step-content">
+                    <h4 class="obs-step-title">Configuración Óptima Recomendada (Checklist Anti-Cortes)</h4>
+                    <div class="obs-checklist">
+                      <label class="obs-check-item">
+                        <span class="obs-check-badge warn"
+                          style="background: #fee2e2; color: #b91c1c; border-color: #fca5a5;">❌ DESMARCADO</span>
+                        <div>
+                          <strong>Reiniciar la reproducción cuando la fuente esté activa:</strong>
+                          <div class="obs-check-desc"><strong>¡DEBE ESTAR DESMARCADO!</strong> En emisiones en vivo
+                            RTMP, tener marcada esta casilla hace que OBS intente reiniciar la fuente cada vez que se
+                            active la escena, provocando congelamientos, cortes de búfer y saltos intermitentes entre
+                            escenas.</div>
+                        </div>
+                      </label>
+                      <label class="obs-check-item">
+                        <span class="obs-check-badge warn"
+                          style="background: #fee2e2; color: #b91c1c; border-color: #fca5a5;">❌ DESMARCADO</span>
+                        <div>
+                          <strong>Cerrar el archivo cuando esté inactivo:</strong>
+                          <div class="obs-check-desc"><strong>¡DEBE ESTAR DESMARCADO!</strong> Si lo marcas, cuando OBS
+                            cambie a la escena de Pausa apagará la fuente y provocará saltos intermitentes entre
+                            escenas.</div>
+                        </div>
+                      </label>
+                      <label class="obs-check-item">
+                        <span class="obs-check-badge info">⏱️ 3 - 5 SEG</span>
+                        <div>
+                          <strong>Límite de reconexión de red:</strong>
+                          <div class="obs-check-desc">Escribe <code>3</code> o <code>5</code> segundos para que OBS
+                            intente reconectar de forma automática si la red titubea.</div>
+                        </div>
+                      </label>
+                      <label class="obs-check-item">
+                        <span class="obs-check-badge warn">⚙️ OPCIONAL</span>
+                        <div>
+                          <strong>Aceleración por hardware (si está disponible):</strong>
+                          <div class="obs-check-desc">Déjalo activo si tienes GPU NVIDIA/AMD. Si experimentas pantalla
+                            negra con audio o micro-congelamientos, desmárcalo.</div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Paso 5 -->
+                <div class="obs-step-item">
+                  <div class="obs-step-number">5</div>
+                  <div class="obs-step-content">
+                    <h4 class="obs-step-title">Haz Clic en "Aceptar" y ¡A Transmitir!</h4>
+                    <p>Guarda los cambios haciendo clic en <strong>Aceptar</strong>. En cuanto inicies la transmisión
+                      desde la app <strong>IRL Pro</strong> o <strong>Larix Broadcaster</strong> en tu celular con datos
+                      móviles 4G/5G, tu stream aparecerá en vivo y con sonido en OBS Studio.</p>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Tarjeta 3: Método Alternativo: Fuente de Vídeo VLC -->
+          <div class="sap-card">
+            <div class="sap-card-header">
+              <div class="sap-card-title-wrap">
+                <span class="sap-card-title">Método Alternativo Recomendado: "Fuente de vídeo VLC" (Ultra Baja
+                  Latencia)</span>
+              </div>
+            </div>
+            <div class="sap-card-body">
+              <div class="sap-message-strip success" style="margin-bottom: 16px;">
+                <span class="sap-message-strip-icon">⚡</span>
+                <div>
+                  <strong>¿Por qué usar la Fuente de Vídeo VLC?</strong> Si tienes instalado VLC Media Player (64-bit),
+                  esta fuente permite ajustar el búfer de red a tan solo <strong>300 milisegundos</strong>. Esto reduce
+                  el retardo de tu stream al mínimo para que puedas leer y responder el chat de Kick en tiempo real
+                  mientras caminas por la calle.
+                </div>
+              </div>
+
+              <div
+                style="background: #ffffff; border: 1px solid #e1e7ef; border-radius: 6px; padding: 18px; line-height: 1.8;">
+                <ol style="margin-left: 20px; color: #24292e;">
+                  <li>En OBS Studio, en el panel <strong>Fuentes</strong>, haz clic en el botón <strong>+
+                      (Añadir)</strong>.</li>
+                  <li>Selecciona <strong>"Fuente de vídeo VLC" (VLC Video Source)</strong>. <em>(Si no te aparece en la
+                      lista, instala VLC Player x64 en tu PC y reinicia OBS).</em></li>
+                  <li>En la ventana de propiedades, localiza la sección <strong>"Lista de reproducción"</strong> y pulsa
+                    el botón <strong>+</strong> a la derecha.</li>
+                  <li>Selecciona <strong>"Añadir ruta/URL"</strong> y pega tu URL de OBS: <code
+                      style="background: #eef4fc; padding: 2px 6px; border-radius: 4px; color: #0854a0;"
+                      id="obsVlcUrlField">rtmp://127.0.0.1:1935/live/irl_sckrg8</code>.</li>
+                  <li>En <strong>Comportamiento de la visibilidad</strong>: selecciona <em>"Detener cuando no sea
+                      visible, reanudar cuando sea visible"</em>.</li>
+                  <li>En <strong>Almacenamiento en búfer de red (ms)</strong>: ajusta a <code>300</code> o
+                    <code>500</code> ms.
+                  </li>
+                  <li>Pulsa <strong>Aceptar</strong>.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 4: Plugin Nativo Anti-Cortes y Cambio de Escena Automático -->
+          <div class="sap-card">
+            <div class="sap-card-header">
+              <div class="sap-card-title-wrap">
+                <span class="sap-card-title">🛡️ Plugin Nativo OBS: Cambio Automático de Escenas (En Vivo ⇄
+                  Pausa)</span>
+              </div>
+              <div>
+                <span class="sap-status-pill active" style="font-size: 11px;">NATIVO LUA / PYTHON INCLUIDO</span>
+              </div>
+            </div>
+            <div class="sap-card-body">
+              <div class="sap-message-strip success" style="margin-bottom: 16px;">
+                <span class="sap-message-strip-icon">✨</span>
+                <div>
+                  <strong>¡Hemos creado un plugin/script exclusivo para tu OBS!</strong> Ubicado en la carpeta
+                  <code>obs_plugin/</code> de este proyecto. No necesitas instalar plugins externos complejos: OBS
+                  Studio lo ejecuta directamente y cambia automáticamente entre tu escena de <strong>EN VIVO</strong> y
+                  tu pantalla de <strong>PAUSA</strong> según detecte o pierda la señal de tu celular en la calle.
+                </div>
+              </div>
+
+              <!-- Ruta del script para copiar -->
+              <div
+                style="background: #f8fafc; border: 1px solid #c8d9ed; border-radius: 6px; padding: 14px; margin-bottom: 18px;">
+                <div
+                  style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: #0854a0; margin-bottom: 6px;">
+                  📁 Carpeta donde se encuentra el Plugin (Dentro de tu Servidor):
+                </div>
+                <div
+                  style="display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+                  <code
+                    style="font-family: var(--sap-font-mono); font-size: 14px; font-weight: 700; color: #0854a0; word-break: break-all;"
+                    id="obsScriptPathText">obs_plugin</code>
+                  <button class="sap-btn sap-btn-emphasized sap-btn-sm"
+                    onclick="copyToClipboard('obs_plugin', 'Carpeta del Plugin de OBS')">📋
+                    Copiar Carpeta</button>
+                </div>
+                <div style="font-size: 12px; color: #475569; margin-top: 8px;">
+                  💡 <strong>Nota:</strong> Al ejecutar el archivo ejecutable (<code>.exe</code>), la carpeta <code>obs_plugin</code> se crea automáticamente al lado del programa con los scripts listos para cargar en OBS.
+                </div>
+              </div>
+
+              <!-- Pasos de instalación en OBS -->
+              <div
+                style="background: #ffffff; border: 1px solid #e1e7ef; border-radius: 6px; padding: 16px; margin-bottom: 16px; line-height: 1.8;">
+                <h4 style="color: #0854a0; font-size: 14px; margin-bottom: 8px;">🚀 Cómo activarlo en OBS Studio en 3
+                  Clics:</h4>
+                <ol style="margin-left: 20px; color: #24292e; font-size: 13px;">
+                  <li>En OBS Studio, ve al menú superior: <strong>Herramientas (Tools) ➔ Scripts</strong>.</li>
+                  <li>En la pestaña <strong>Scripts</strong>, haz clic en el botón <strong>+</strong> (esquina inferior
+                    izquierda).</li>
+                  <li>Entra en la carpeta <code>obs_plugin</code>, selecciona el archivo <code>irl_auto_scene_switcher.lua</code> y pulsa <strong>Abrir</strong>.
+                  </li>
+                  <li>En el panel derecho, selecciona tu <strong>Fuente Multimedia</strong>, tu escena <strong>EN
+                      VIVO</strong> y tu escena <strong>PAUSA</strong>. ¡Listo!</li>
+                </ol>
+              </div>
+
+              <div class="sap-grid-2">
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px;">
+                  <h4 style="color: #107e3e; margin-bottom: 8px;">🟢 Con Señal (Video Activo)</h4>
+                  <ul style="margin-left: 18px; color: #475569; font-size: 13px; line-height: 1.7;">
+                    <li><strong>Detección:</strong> El script detecta el estado <code>PLAYING</code> del stream
+                      H.264/AAC.</li>
+                    <li><strong>Acción:</strong> Cambia automáticamente a tu escena <code>"IRL En Vivo"</code>.</li>
+                    <li><strong>Ventaja:</strong> Retorno instantáneo al stream sin tocar el teclado.</li>
+                  </ul>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px;">
+                  <h4 style="color: #bb0000; margin-bottom: 8px;">🔴 Sin Señal (Pérdida de 4G/5G)</h4>
+                  <ul style="margin-left: 18px; color: #475569; font-size: 13px; line-height: 1.7;">
+                    <li><strong>Detección:</strong> El Watchdog corta el socket y el script detecta <code>ENDED</code> o
+                      <code>STOPPED</code>.
+                    </li>
+                    <li><strong>Acción:</strong> Cambia automáticamente a la escena
+                      <code>"Pausa / Volvemos Enseguida"</code>.
+                    </li>
+                    <li><strong>Ventaja:</strong> Nunca deja la pantalla congelada para tu chat de Kick.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- -----------------------------------------------------------------------
+         TRANSACCIÓN [SM21]: REGISTRO DEL SISTEMA (SYSLOG)
+         ----------------------------------------------------------------------- -->
+        <div id="view-SM21" class="sap-tab-view">
+
+          <div class="sap-card">
+            <div class="sap-card-header">
+              <div class="sap-card-title-wrap">
+                <span class="sap-card-title">Auditoría y Registro de Eventos del Servidor (SM21)</span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="sap-btn sap-btn-sm" onclick="fetchLogs()">🔄 Actualizar Log</button>
+                <button class="sap-btn sap-btn-sm sap-btn-negative" onclick="clearLogs()">🗑️ Limpiar Log</button>
+              </div>
+            </div>
+            <div class="sap-card-body" style="padding: 0;">
+              <div class="sap-table-container">
+                <table class="sap-alv-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 140px;">Marca de Tiempo</th>
+                      <th style="width: 100px;">Severidad</th>
+                      <th style="width: 120px;">Componente</th>
+                      <th style="width: 130px;">IP Cliente</th>
+                      <th>Mensaje de Evento</th>
+                    </tr>
+                  </thead>
+                  <tbody id="logsTableBody">
+                    <!-- Se llena dinámicamente con sap_app.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </main>
+    </div> <!-- Fin .sap-main-workarea -->
+  </div> <!-- Fin .sap-app-body -->
+
+  <!-- =========================================================================
+       MODAL QR CODE (SAP DIALOG)
+       ========================================================================= -->
+  <div id="sapQrModal" class="sap-modal-overlay">
+    <div class="sap-modal">
+      <div class="sap-modal-header">
+        <span class="sap-modal-title" id="qrModalTitle">Código QR para Ingesta Móvil</span>
+        <button class="sap-modal-close" id="sapModalCloseBtn">&times;</button>
+      </div>
+      <div class="sap-modal-body">
+        <div style="font-size: 13px; color: var(--sap-text-secondary); margin-bottom: 8px;">
+          Escanea este código con la cámara de tu celular en la app <strong>IRL Pro</strong> o <strong>Larix
+            Broadcaster</strong> para configurar la transmisión automáticamente:
+        </div>
+
+        <div class="sap-qr-box">
+          <canvas id="qrCanvas"></canvas>
+        </div>
+
+        <div
+          style="font-size: 11px; color: var(--sap-text-muted); word-break: break-all; text-align: center; font-family: var(--sap-font-mono);"
+          id="qrModalUrl">
+          rtmp://[IP-SERVIDOR]:1935/live/irl
+        </div>
+      </div>
+      <div class="sap-modal-footer">
+        <button class="sap-btn sap-btn-emphasized" id="sapModalFooterCloseBtn">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL DE APOYO / KICK (SAP DIALOG)
+       ========================================================================= -->
+  <div id="supportModal" class="sap-modal-overlay">
+    <div class="sap-modal sap-modal-support">
+      <div class="sap-modal-header">
+        <span class="sap-modal-title">💖 Apóyame en mi Stream IRL</span>
+        <button class="sap-modal-close" onclick="closeSupportModal()">&times;</button>
+      </div>
+      <div class="sap-modal-body">
+
+        <!-- Streamer Card Kick -->
+        <div class="kick-streamer-card">
+          <div class="kick-card-header">
+            <div class="kick-avatar-badge">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="#53fc18">
+                <path d="M4 3h4v6.5l4.5-6.5h5.5l-5.8 7.8L18.5 21H13l-5-7.5V21H4V3z" />
+              </svg>
+            </div>
+            <div>
+              <div class="kick-streamer-name">iamfreedz <span class="kick-live-badge">KICK CREATOR</span></div>
+              <div class="kick-streamer-desc">Streaming IRL Móvil &bull; Transmisiones en Vivo por la Ciudad</div>
+            </div>
+          </div>
+
+          <div class="kick-card-actions">
+            <a href="https://kick.com/iamfreedz" target="_blank" rel="noopener noreferrer" class="btn-kick-card-follow">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M4 3h4v6.5l4.5-6.5h5.5l-5.8 7.8L18.5 21H13l-5-7.5V21H4V3z" />
+              </svg>
+              Seguir en Kick: kick.com/iamfreedz
+            </a>
+          </div>
+        </div>
+
+        <div style="font-size: 13px; color: #475569; margin: 16px 0 12px; line-height: 1.6; text-align: center;">
+          ¡Muchas gracias por acompañarme y hacer posible este proyecto! Cada follow, suscripción y mensaje en el chat
+          ayuda a mejorar el equipo y llevar directos de mejor calidad.
+        </div>
+
+      </div>
+      <div class="sap-modal-footer">
+        <a href="https://kick.com/iamfreedz" target="_blank" rel="noopener noreferrer" class="sap-btn sap-btn-positive"
+          style="text-decoration: none;">
+          🟢 Ir al Perfil de Kick
+        </a>
+        <button class="sap-btn" onclick="closeSupportModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       SAP BOTTOM STATUS BAR (Classic SAP GUI / Fiori System Bar)
+       ========================================================================= -->
+  <footer class="sap-bottom-bar">
+    <div class="sap-status-msg-left">
+      <span id="bottomStatusIcon" class="sap-status-icon-ok">✓</span>
+      <span id="bottomStatusMsg">S: Servidor RTMP y Consola SAP iniciados con éxito en 0.0.0.0:1935 / :8080</span>
+    </div>
+    <div class="sap-status-system-right">
+      <span>T-CODE: <strong id="bottomTCode">IRL01</strong></span>
+      <span>SISTEMA: <strong>IRL [PRD/V1]</strong></span>
+      <span>MODO: <strong>ONLINE</strong></span>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div id="sapToast" class="sap-toast"></div>
+
+  <script src="sap_app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,5 @@
+pyrtmp>=0.3.1
+bitstring>=4.1.4,<4.2
+bitarray>=2.8.0,<3.0.0
+colorama>=0.4.6
+aiohttp>=3.9.0
